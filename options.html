@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP & Time Settings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="options-page">
+    <div class="container">
+        <div class="header">
+            <h1>Settings</h1>
+        </div>
+
+        <div class="section">
+            <h2>Time Format</h2>
+            <div class="card">
+                <div class="form-group">
+                    <label class="radio-label">
+                        <input type="checkbox" id="use24Hour">
+                        Use 24-hour format
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="radio-label">
+                        <input type="checkbox" id="showSeconds">
+                        Show seconds
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="radio-label">
+                        <input type="checkbox" id="showDate">
+                        Show date
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>IP Address Source</h2>
+            <div class="card">
+                <div id="source-list" class="source-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div id="status-message"></div>
+        </div>
+    </div>
+    <script type="module" src="options.js"></script>
+</body>
+
+</html>
