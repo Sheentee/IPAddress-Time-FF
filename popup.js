@@ -70,12 +70,17 @@ async function copyIP() {
             await navigator.clipboard.writeText(ip);
 
             // Visual feedback
-            const originalIcon = btnCopy.innerHTML;
-            btnCopy.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            // Visual feedback
+            const iconCopy = document.getElementById('icon-copy');
+            const iconCheck = document.getElementById('icon-check');
+
+            iconCopy.classList.add('hidden');
+            iconCheck.classList.remove('hidden');
             btnCopy.style.color = 'var(--success-color)';
 
             setTimeout(() => {
-                btnCopy.innerHTML = originalIcon;
+                iconCopy.classList.remove('hidden');
+                iconCheck.classList.add('hidden');
                 btnCopy.style.color = '';
             }, 2000);
         } catch (err) {

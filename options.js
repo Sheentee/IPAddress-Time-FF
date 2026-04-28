@@ -51,29 +51,64 @@ async function saveSettings() {
 }
 
 function renderSourceList() {
-    sourceListEl.innerHTML = '';
+    sourceListEl.textContent = '';
 
     IP_SOURCES.forEach(source => {
         const item = document.createElement('div');
         item.className = 'source-item';
 
-        const isChecked = source.url === window.currentIpSource ? 'checked' : '';
+        // Label Container
+        const label = document.createElement('label');
+        label.className = 'radio-label';
+        label.style.flex = '1';
 
-        item.innerHTML = `
-      <label class="radio-label" style="flex: 1">
-        <input type="radio" name="ipSource" value="${source.url}" ${isChecked}>
-        <span>${source.name}</span>
-        <span class="label" style="margin-left: 8px; font-size: 10px;">${new URL(source.url).hostname}</span>
-      </label>
-      <div class="status-indicator" id="status-${btoa(source.url)}">
-        <span class="dot pending"></span>
-        <span>Checking...</span>
-      </div>
-    `;
+        // Radio Input
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'ipSource';
+        input.value = source.url;
+        if (source.url === window.currentIpSource) {
+            input.checked = true;
+        }
+        input.addEventListener('change', saveSettings);
 
-        // Add change listener to the radio button
-        const radio = item.querySelector('input[type="radio"]');
-        radio.addEventListener('change', saveSettings);
+        // Name Text
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = source.name;
+
+        // Hostname Label
+        const hostnameSpan = document.createElement('span');
+        hostnameSpan.className = 'label';
+        hostnameSpan.style.marginLeft = '8px';
+        hostnameSpan.style.fontSize = '10px';
+        try {
+            hostnameSpan.textContent = new URL(source.url).hostname;
+        } catch (e) {
+            hostnameSpan.textContent = source.url;
+        }
+
+        // Assemble Label
+        label.appendChild(input);
+        label.appendChild(nameSpan);
+        label.appendChild(hostnameSpan);
+
+        // Status Indicator
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'status-indicator';
+        statusDiv.id = `status-${btoa(source.url)}`;
+
+        const dot = document.createElement('span');
+        dot.className = 'dot pending';
+
+        const statusText = document.createElement('span');
+        statusText.textContent = 'Checking...';
+
+        statusDiv.appendChild(dot);
+        statusDiv.appendChild(statusText);
+
+        // Assemble Item
+        item.appendChild(label);
+        item.appendChild(statusDiv);
 
         sourceListEl.appendChild(item);
     });
@@ -84,13 +119,23 @@ async function runConnectivityChecks() {
         checkConnectivity(source.url).then(result => {
             const statusEl = document.getElementById(`status-${btoa(source.url)}`);
             if (statusEl) {
-                const statusClass = result.status === 'online' ? 'online' : 'offline';
-                const statusText = result.status === 'online' ? `${result.latency}ms` : 'Offline';
+                // Clear existing content safely or update strict children if structure is guaranteed
+                // Safer to clear and rebuild these two small spans
+                while (statusEl.firstChild) {
+                    statusEl.removeChild(statusEl.firstChild);
+                }
 
-                statusEl.innerHTML = `
-          <span class="dot ${statusClass}"></span>
-          <span>${statusText}</span>
-        `;
+                const statusClass = result.status === 'online' ? 'online' : 'offline';
+                const statusTextContent = result.status === 'online' ? `${result.latency}ms` : 'Offline';
+
+                const dot = document.createElement('span');
+                dot.className = `dot ${statusClass}`;
+
+                const text = document.createElement('span');
+                text.textContent = statusTextContent;
+
+                statusEl.appendChild(dot);
+                statusEl.appendChild(text);
             }
         });
     }

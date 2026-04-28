@@ -15,6 +15,10 @@
     box-sizing: border-box;
 }
 
+.hidden {
+    display: none !important;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -231,29 +235,4 @@ a {
 
 a:hover {
     text-decoration: underline;
-}
-
-/* Donation Button */
-.footer-donate {
-    margin-top: 8px;
-    display: flex;
-    justify-content: flex-start;
-}
-
-.btn-donate {
-    background-color: #0070ba;
-    color: #ffffff !important;
-    /* Force white text */
-    padding: 6px 12px;
-    border-radius: 16px;
-    font-size: 11px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.2s;
-    display: inline-block;
-}
-
-.btn-donate:hover {
-    background-color: #005ea6;
-    text-decoration: none;
 }
