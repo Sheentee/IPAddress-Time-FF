@@ -24,8 +24,6 @@ if (-not (Test-Path $distsDir)) {
 if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
 if (Test-Path $xpiPath) { Remove-Item $xpiPath -Force }
 
-# Excludes
-Push-Location $rootDir
 
 $itemsToPackage = @(
     "icons",
